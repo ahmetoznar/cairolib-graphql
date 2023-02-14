@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "outDir": "build",
+    "rootDir": ".",
+    "moduleResolution": "node",
+    "target": "es6",
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "jsx": "react",
+    "lib": [
+      "es6",
+      "dom"
+    ],
+    "removeComments": true,
+    "typeRoots": [
+      "/node_modules/@types",
+      "/Types/"
+    ]
+  },
+  "compileOnSave": false,
+  "exclude": [
+    "/node_modules/",
+    "/bin",
+    "/obj"
+  ]
+}

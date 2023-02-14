@@ -1,0 +1,92 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Config {
+  uuid             String @id @default(uuid())
+  totalLinesOfCode Int
+  last_index       Int    @default(0)
+}
+
+model Author {
+  wallet_address     String             @id @unique
+  description        String             @db.Text
+  author_name        String
+  github_link        String
+  website_link       String
+  author_image       String             @default("author-image-56823968236.jpg")
+  register_date      DateTime?          @default(now())
+  last_submit_date   String?
+  contract_ids       ContractId[]
+  deployed_contracts DeployedContract[]
+  files              File[]
+}
+
+model ContractId {
+  uuid       String  @id @default(uuid())
+  value      Int
+  authorUuid String
+  author     Author? @relation(fields: [authorUuid], references: [wallet_address])
+}
+
+model File {
+  uuid          String        @id @default(uuid())
+  title         String
+  description   String        @db.Text
+  sub_links     FileSublink[]
+  is_audited    Boolean
+  cairo_version Int
+  date          String
+  authorUuid    String
+  author        Author?       @relation(fields: [authorUuid], references: [wallet_address])
+  categories    Category[]
+}
+
+model FileSublink {
+  uuid     String @id @default(uuid())
+  title    String
+  url      String
+  fileUuid String
+  file     File?  @relation(fields: [fileUuid], references: [uuid])
+}
+
+model DeployedContract {
+  uuid       String   @id @default(uuid())
+  name       String
+  address    String
+  network    NETWORKS
+  is_audited Boolean
+  authorUuid String
+  author     Author?  @relation(fields: [authorUuid], references: [wallet_address])
+}
+
+enum NETWORKS {
+  GOERLI
+  MAINNET
+}
+
+enum Category {
+  STAKING
+  AMM
+  TOKEN_STANDARTS
+  NFT
+  DAO
+  PROXY_CONTRACTS
+  VESTING
+  ARRAY_MANIPULATIONS
+  MULTI_CALLS
+  ON_CHAIN_VERIFICATION
+  PROOVER
+  TIME_LOCKERS
+  MULTI_SIG
+  DEFI
+  ACCESS_CONTROL
+  MATH
+  IDO
+  LENDING_BORROW
+}
